@@ -43,41 +43,69 @@ stack_top:
 
 _start:
 
-# The bootloader loaded us into 32-bit protected mode on a x86 machine
-# Interrupts, Paging is disabled, The process state is as defined in
-# the multiboot standard. The kernel has full control of the CPU.
-# The kernel can only make use of hardware features and any code provides
-# as part of itself. no <stdio.h> no printf, etc... Now we have the full
-# access to CPU
+    # The bootloader loaded us into 32-bit protected mode on a x86 machine
+    # Interrupts, Paging is disabled, The process state is as defined in
+    # the multiboot standard. The kernel has full control of the CPU.
+    # The kernel can only make use of hardware features and any code provides
+    # as part of itself. no <stdio.h> no printf, etc... Now we have the full
+    # access to CPU
+    
+    # Setup the stack, it grow downwards on x86 machines, so make esp point
+    # to stack_top(higher address)
+    
+    mov $stack_top, %esp
+    
+    # Here we should initialize crucial processor state before the high level
+    # kernel is entered. It's best to minimize the early environment where
+    # crucial features are offline. Note now the processor is not fully initialized
+    # yet: Features such as floating point instructions and instruction set extensions
+    # not init yet, GDT should be loaded here, Paging should be enabled here.
+    # C++ features such as global constructors and exceptions will require runtime support
+    # to work as well
 
-# Setup the stack, it grow downwards on x86 machines, so make esp point
-# to stack_top(higher address)
+    # Here we init the GDT
+    # We construct the GDT descriptor right below the stack-top address(lower than it)
+    # 6 bytes just fits the GDT descriptor size
+    # gdt_size - 1 and gdt_addr
 
-mov $stack_top, %esp
+    subl $6, %esp
+    movw gdt_size_minus_one, %cx
+    movw %cx, 0(%esp)
+    movl $gdt, %ecx
+    movl %ecx, 2(%esp)
+    lgdt 0(%esp)
+    addl $6, %esp
 
-# Here we should initialize crucial processor state before the high level
-# kernel is entered. It's best to minimize the early environment where
-# crucial features are offline. Note now the processor is not fully initialized
-# yet: Features such as floating point instructions and instruction set extensions
-# not init yet, GDT should be loaded here, Paging should be enabled here.
-# C++ features such as global constructors and exceptions will require runtime support
-# to work as well
+    # Switch CS 
+    push $0x08
+    push $1f        # Push the start address of the code marked as tag 1
+    retf
+    
+    # Enter the high-level kernel
+1:    
+    movw $0x10, %cx
+    movw %cx, %ds
+    movw %cx, %es
+    movw %cx, %fs
+    movw %cx, %gs
+    movw %cx, %ss
+    
+haha:    ljmp $0x08, $haha2
+haha2:  ljmp $0x10, $haha
 
-# Enter the high-level kernel
+    call _init
 
-call _init
+    call kernel_main
 
-call kernel_main
+    call _fini
 
-call _fini
-
-cli
-
-# Halt the system forever after kernel return
-1:
-	hlt
-	jmp 1b
-
-# Set the size of the _start symbol to the current location '.' minus its start.
-# This is useful when debugging or when implementing call tracing.
+    cli
+    
+    # Halt the system forever after kernel return
+.Lhlt:
+    hlt
+    jmp .Lhlt
+    
+    # Set the size of the _start symbol to the current location '.' minus its start.
+    # This is useful when debugging or when implementing call tracing.
 .size _start, . - _start
