@@ -1,6 +1,7 @@
 OBJS=kernel.o \
 	 terminal.o \
 	 stdio.o \
+	 gdt.o \
 
 TARGET=i686-elf
 CC=$(TARGET)-gcc
@@ -25,6 +26,12 @@ void-os.iso: kernel.bin grub.cfg
 boot-qemu: void-os.iso
 	- qemu-system-i386 -cdrom void-os.iso
 
+boot-qemu-dbg: void-os.iso
+	- qemu-system-i386 -cdrom void-os.iso -d int -no-reboot -no-shutdown
+
+boot.o: boot.s
+	- $(CC) $(CFLAGS) -c $<
+
 .o: .c
 	- $(CC) $(CFLAGS) -c $<
 
@@ -37,7 +44,7 @@ crtn.o: crtn.s
 kernel.bin: boot.o $(OBJ_LINK_LIST)
 	- $(CC) $(CFLAGS) -o kernel.bin $(LDFLAGS) boot.o $(OBJ_LINK_LIST)
 
-.PHONY: clean boot-qemu
+.PHONY: clean boot-qemu boot-qemu-dbg
 
 clean:
 	- rm -rf isodir

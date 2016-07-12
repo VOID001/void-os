@@ -13,6 +13,7 @@ void kernel_main() {
     int a = 233;
     uint32_t deadbeef = 0xdeadbeef;
     printf("Hello world %d %x\n", a, deadbeef);
+    printf("Hello world %d %x\n", a, deadbeef);
 
     //for(int i = 0; i <= 333; i++)
     //{
