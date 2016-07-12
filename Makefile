@@ -2,7 +2,7 @@ TARGET=i686-elf
 CC=$(TARGET)-gcc
 LD=$(TARGET)-ld
 AS=$(TARGET)-as
-CFLAGS=-ffreestanding -O2 -nostdlib -std=gnu99 -Wall -Wextra
+CFLAGS=-ffreestanding -O0 -nostdlib -std=gnu99 -Wall -Wextra
 LDFLAGS=-lgcc -T linker.ld
 
 void-os.iso: kernel.bin grub.cfg
@@ -19,3 +19,11 @@ boot-qemu: void-os.iso
 
 kernel.bin: kernel.o boot.o
 	$(CC) $(CFLAGS) -o kernel.bin $(LDFLAGS) boot.o kernel.o
+
+.PHONY: clean boot-qemu
+
+clean:
+	- rm -rf isodir
+	- rm -rf *.o
+	- rm -rf *.bin
+	- rm -rf *.iso
