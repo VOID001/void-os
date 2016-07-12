@@ -1,6 +1,8 @@
 #include "terminal.h"
 #include "vga.h"
 #include "stdio.h"
+#include "idt.h"
+#include "interrupt.h"
 
 void kernel_main() {
     /* Initialize terminal interface */
@@ -14,6 +16,12 @@ void kernel_main() {
     uint32_t deadbeef = 0xdeadbeef;
     printf("Hello world %d %x\n", a, deadbeef);
     printf("Hello world %d %x\n", a, deadbeef);
+    init_idt();
+    init_pic();
+    asm volatile("sti");
+    for(;;) {
+            asm("hlt");
+    }
 
     //for(int i = 0; i <= 333; i++)
     //{
