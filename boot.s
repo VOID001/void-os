@@ -91,7 +91,9 @@ _start:
     movw %cx, %ss
     
 haha:    ljmp $0x08, $haha2
-haha2:  ljmp $0x10, $haha
+haha2:  ljmp $0x08, $haha3
+haha3:  ljmp $0x08, $haha4
+haha4:
 
     call _init
 
