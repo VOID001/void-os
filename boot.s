@@ -65,7 +65,11 @@ mov $stack_top, %esp
 
 # Enter the high-level kernel
 
+call _init
+
 call kernel_main
+
+call _fini
 
 cli
 
