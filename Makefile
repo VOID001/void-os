@@ -1,4 +1,6 @@
-OBJS=kernel.o 
+OBJS=kernel.o \
+	 terminal.o \
+	 stdio.o \
 
 TARGET=i686-elf
 CC=$(TARGET)-gcc
