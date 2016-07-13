@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "idt.h"
 #include "interrupt.h"
+#include "welcomepage.h"
 
 void kernel_main() {
     /* Initialize terminal interface */
@@ -12,7 +13,8 @@ void kernel_main() {
      * yet, '\n' will produce some VGA specific character instead.
      * This is normal.
      */
-    int a = 233;
+    welcomepage();
+	int a = 233;
     uint32_t deadbeef = 0xdeadbeef;
     printf("Hello world %d %x\n", a, deadbeef);
     printf("Hello world %d %x\n", a, deadbeef);
@@ -22,7 +24,7 @@ void kernel_main() {
     for(;;) {
             asm("hlt");
     }
-
+	welcomepage();
     //for(int i = 0; i <= 333; i++)
     //{
     //    terminal_setcolor(make_color((enum vga_color)i, 0));
