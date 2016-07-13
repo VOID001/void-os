@@ -20,9 +20,10 @@ void kernel_main()
     printf("void-os$ ");
     while(1)
     {
-        char ch = getchar();
-        if(ch == '\n')
-            printf("void-os$ ");
+		char cmd[12];
+		scanf("%s",cmd);
+		printf("sh: commmand not found: %s\n", cmd);
+		printf("void-os$ ");
 
     }
     for(;;) {
