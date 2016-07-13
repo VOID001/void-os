@@ -76,6 +76,8 @@ void terminal_scroll()
         copy_one_line(i - 1, i);
     terminal_row = VGA_HEIGHT - 1;
     terminal_column = 0;
+    for(size_t i = 0; i < VGA_WIDTH; i++)
+        terminal_putentryat(' ', terminal_color, i, terminal_row);
 }
 
 void copy_one_line(const size_t dst_row, const size_t src_row)
