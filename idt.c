@@ -51,7 +51,6 @@ void init_idt()
         init_gatedesc_to_null(IDT + i);
 
     /* Register the handler functions */
-    printf("The int_stub is at %x\n", int_stub);
     for(int i = 0; i < 32; i++)
         set_gatedesc(IDT + i, int_stub, IDT_TYPE_INTERRUPT, 0x0);
 
@@ -59,12 +58,6 @@ void init_idt()
         set_gatedesc(IDT +i, int_20h, IDT_TYPE_INTERRUPT, 0x0);
 
     set_gatedesc(IDT + 0x21, int_21h, IDT_TYPE_INTERRUPT, 0x0);
-
-    print_idt_raw(0);
-    print_idt_raw(0x21);
-    print_idt_info(0x21);
-    print_idt_info(0x1);
-    print_idt_info(0x2);
 
     lidt((uintptr_t)IDT, sizeof(IDT) -1);
 }

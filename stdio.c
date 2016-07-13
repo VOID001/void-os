@@ -30,6 +30,9 @@ int printf(const char *fmt, ...)
                 s = va_arg(ap, char*);
                 terminal_writestring(s);
                 break;
+            case 'c':
+                terminal_putchar(va_arg(ap, int));
+                break;
         }
     }
     return 0;

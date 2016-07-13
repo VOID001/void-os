@@ -5,24 +5,18 @@
 #include "interrupt.h"
 #include "kbd_driver.h"
 
-void kernel_main() {
+void kernel_main()
+{
     /* Initialize terminal interface */
     terminal_initialize();
 
-    /* Since there is no support for newlines in terminal_putchar
-     * yet, '\n' will produce some VGA specific character instead.
-     * This is normal.
-     */
-    int a = 233;
-    uint32_t deadbeef = 0xdeadbeef;
-    printf("Hello world %d %x\n", a, deadbeef);
-    printf("Hello world %d %x\n", a, deadbeef);
     init_idt();
     init_pic();
+    init_keyboard();
+    /* Accept Intterupt now */
     asm volatile("sti");
-    uint8_t set = get_current_scanset();
-    printf("Current Scanset is %x\n", set);
-    
+    printf("VOID-OS Operating System 0.01\n\n");
+    printf("void-os$ ");
     for(;;) {
             asm("hlt");
     }

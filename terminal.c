@@ -1,4 +1,5 @@
 #include "terminal.h"
+#include "string.h"
 
 size_t terminal_row;
 size_t terminal_column;
@@ -36,15 +37,20 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
  
 void terminal_putchar(char c)
 {
-    if(c != '\n')
+    if(c != '\n' && c != '\b')
     {
         terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
         terminal_column++;
     }
-    else
+    else if(c == '\n')
     {
         terminal_row++;
         terminal_column = 0;
+    }
+    else if(c == '\b')
+    {
+        terminal_column = (terminal_column == 0) ? 0 : terminal_column - 1;
+        terminal_putentryat(' ', terminal_color, terminal_column, terminal_row);
     }
     if (terminal_column == VGA_WIDTH)
     {
@@ -116,10 +122,4 @@ void terminal_writenumber(uint32_t num, int base)
     terminal_writestring(buf);
 }
 
-size_t strlen(const char* str)
-{
-    size_t len = 0;
-    while (str[len])
-        len++;
-    return len;
-}
+

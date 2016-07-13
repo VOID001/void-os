@@ -1,4 +1,5 @@
 #include "interrupt.h"
+#include "kbd_driver.h"
 
 void init_pic(void)
 {
@@ -40,10 +41,7 @@ void handler_stub(void)
 
 void handler_21h(void)
 {
-    char c;
-    while(!(c = inb(0x60)));
-    uint8_t code = c;
-    printf("Key code is %x\n", code);
+    translate_scancode();
     outb(0x20, 0x20);
 }
 

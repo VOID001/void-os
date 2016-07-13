@@ -6,6 +6,7 @@ OBJS=kernel.o \
 	 interrupt_handler.o \
 	 interrupt.o \
 	 kbd_driver.o \
+	 string.o \
 
 TARGET=i686-elf
 CC=$(TARGET)-gcc
