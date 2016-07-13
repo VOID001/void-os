@@ -96,7 +96,11 @@ void terminal_writenumber(uint32_t num, int base)
     static char digits[] = "0123456789abcdef";
     char buf[20];
     int cnt = 0;
-
+    
+    if(num == 0)
+    {
+        buf[cnt++] = '0';
+    }
     while(num)
     {
         buf[cnt++] = digits[num % base];
