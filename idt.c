@@ -69,29 +69,6 @@ void init_idt()
     lidt((uintptr_t)IDT, sizeof(IDT) -1);
 }
 
-void handler_stub(void)
-{
-    outb(0x20, 0x20);
-    outb(0xa0, 0x20);
-    return ;
-}
-
-void handler_21h(void)
-{
-    printf("Congrats VOID!\n");
-    char c;
-    while(!(c = inb(0x60)));
-    printf("Key code is %x\n", c);
-    outb(0x20, 0x20);
-}
-
-void handler_20h(void)
-{
-    outb(0x20, 0x20);
-}
-
-
-
 void print_idt_raw(int i)
 {
     printf("The No.%d IDT entry is %x %x\n", i, (uint32_t)(IDT[i].offset_high << 16 | IDT[i].type_attr), IDT[i].selector << 16 | IDT[i].offset_low);

@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "idt.h"
 #include "interrupt.h"
+#include "kbd_driver.h"
 
 void kernel_main() {
     /* Initialize terminal interface */
@@ -19,15 +20,10 @@ void kernel_main() {
     init_idt();
     init_pic();
     asm volatile("sti");
+    uint8_t set = get_current_scanset();
+    printf("Current Scanset is %x\n", set);
+    
     for(;;) {
             asm("hlt");
     }
-
-    //for(int i = 0; i <= 333; i++)
-    //{
-    //    terminal_setcolor(make_color((enum vga_color)i, 0));
-    //    terminal_writenumber(i, 10);
-    //    terminal_writestring("\n");
-    //    for(int j = 0; j < 21474830; j++) ;
-    //}
 }

@@ -28,3 +28,26 @@ void init_pic(void)
     outb(PIC0_DATA, 0xfd);
     outb(PIC1_DATA, 0xff);
 }
+
+/* Interrupt handlers */
+
+void handler_stub(void)
+{
+    outb(0x20, 0x20);
+    outb(0xa0, 0x20);
+    return ;
+}
+
+void handler_21h(void)
+{
+    char c;
+    while(!(c = inb(0x60)));
+    uint8_t code = c;
+    printf("Key code is %x\n", code);
+    outb(0x20, 0x20);
+}
+
+void handler_20h(void)
+{
+    outb(0x20, 0x20);
+}

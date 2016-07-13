@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "c_x86asm.h"
+#include "stdio.h"
 
 #define PIC0_CONTROL 0x20
 #define PIC0_DATA 0x21
