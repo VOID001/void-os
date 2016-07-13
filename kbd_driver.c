@@ -98,11 +98,21 @@ uint8_t translate_scancode()
     if(keycode_map[scancode] != 0)
     {
         if(lshift_pressed || rshift_pressed)
+        {
             printf("%c", keycode_map_shift[scancode]);
+            write_to_bufio(keycode_map_shift[scancode]);
+        }
         else if(capslock_on)
+        {
             printf("%c", toupper(keycode_map[scancode]));
+            write_to_bufio(toupper(keycode_map[scancode]));
+        }
         else
+        {
             printf("%c", keycode_map[scancode]);
+            write_to_bufio(keycode_map[scancode]);
+        }
+            
     }
 
     else if(scancode == KEYBOARD_SCANCODE_LSHIFT_PRESSED)

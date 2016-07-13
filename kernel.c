@@ -12,11 +12,19 @@ void kernel_main()
 
     init_idt();
     init_pic();
+    init_io();
     init_keyboard();
     /* Accept Intterupt now */
     asm volatile("sti");
     printf("VOID-OS Operating System 0.01\n\n");
     printf("void-os$ ");
+    while(1)
+    {
+        char ch = getchar();
+        if(ch == '\n')
+            printf("void-os$ ");
+
+    }
     for(;;) {
             asm("hlt");
     }
