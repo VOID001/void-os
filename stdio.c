@@ -50,9 +50,48 @@ int scanf(const char *fmt, ...)
     va_list ap;
     va_start(ap, fmt);
 
+    char c,*s;
+    int *p;
+    char ch,cch;
     while(*fmt)
     {
-        
+        c = *fmt++;
+        if(c != '%')
+        {
+            continue;
+        }
+        c = *fmt++;
+        switch(c)
+        {
+            case 'd':
+                p = va_arg(ap,int*);
+                int res = 0;
+                while(ch = getchar())
+                {
+                    if(ch == ' '|| ch == '\n')
+                        break;
+                    res = res * 10 + ch - '0';
+                }
+                *p = res;
+                break;
+            case 's':
+                s = va_arg(ap, char*);
+                while(ch = getchar())
+                {
+                    if(ch == ' '|| ch == '\n')
+                    {
+                        *s = '\0';
+                        break;
+                    }
+                    *s++ = ch;
+                }
+                break;
+            case 'c':
+                s = va_arg(ap, char*);
+                ch = getchar();
+                *s = ch;
+                break;
+        }
     }
 }
 
