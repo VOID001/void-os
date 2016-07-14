@@ -12,6 +12,7 @@ void terminal_scroll();
 void copy_one_line(const size_t dst_row, const size_t src_row);
 void terminal_writenumber(uint32_t num, int base);
 size_t strlen(const char* str);
-
+void terminal_clear_screen();
+void terminal_set_cursor(size_t, size_t);
 #endif
 

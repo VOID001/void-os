@@ -6,6 +6,7 @@ OBJS=kernel.o \
 	 interrupt_handler.o \
 	 interrupt.o \
      welcomepage.o \
+     icon.o \
 
 TARGET=i686-elf
 CC=$(TARGET)-gcc

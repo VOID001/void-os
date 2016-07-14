@@ -8,23 +8,23 @@
 void kernel_main() {
     /* Initialize terminal interface */
     terminal_initialize();
-
+	welcomepage();
     /* Since there is no support for newlines in terminal_putchar
      * yet, '\n' will produce some VGA specific character instead.
      * This is normal.
      */
-    welcomepage();
-	int a = 233;
-    uint32_t deadbeef = 0xdeadbeef;
-    printf("Hello world %d %x\n", a, deadbeef);
-    printf("Hello world %d %x\n", a, deadbeef);
+	//int a = 233;
+    //uint32_t deadbeef = 0xdeadbeef;
+    //printf("Hello world %d %x\n", a, deadbeef);
+    //printf("Hello world %d %x\n", a, deadbeef);
     init_idt();
     init_pic();
-    asm volatile("sti");
+    terminal_clear_screen();
+	//printf("WELCOME TO TOY-OS");
+	asm volatile("sti");
     for(;;) {
             asm("hlt");
     }
-	welcomepage();
     //for(int i = 0; i <= 333; i++)
     //{
     //    terminal_setcolor(make_color((enum vga_color)i, 0));
